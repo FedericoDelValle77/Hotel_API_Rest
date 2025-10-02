@@ -72,7 +72,7 @@ const deleteRoom = async (req, res) => {
     }
 };
 
-export default {
+export {
     getRooms,
     getRoomsByID,
     createRoom,

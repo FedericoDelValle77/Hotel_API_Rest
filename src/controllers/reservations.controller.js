@@ -3,7 +3,7 @@ import {
   getAllReservations,
   updateReservationByIds,
   cancelReservationByIds
-} from "../models/reservation.model.js";
+} from "../models/reservations.model.js";
 
 // Crear reserva
 export const createReservation = async (req, res) => {

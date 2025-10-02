@@ -16,4 +16,5 @@ router.post('/buffet', authMiddleware,validarBuffet,createCatalog);
 router.put('/buffet/:id',authMiddleware,validarBuffet, updateCatalog);
 //DELETE /buffet/:id → Eliminar plato/bebida.
 router.delete('buffet/:id',authMiddleware,deleteCatalog )
+export default router;
 

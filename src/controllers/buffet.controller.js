@@ -71,11 +71,11 @@ const deleteCatalog = async (req, res) => {
         res.status(500).json({ message: "Error al eliminar el item", error: error.message });
     }
 };
-
-export default {
-    getCatalog,
-    getCatalogByID,
-    createCatalog,
-    updateCatalog,
-    deleteCatalog
+export {
+  getCatalog,
+  getCatalogByID,
+  createCatalog,
+  updateCatalog,
+  deleteCatalog
 };
+
