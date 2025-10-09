@@ -1,12 +1,9 @@
-// middleware/reservations.middleware.js
+
 import { check, param, validationResult } from "express-validator";
 
-// En tu middleware, antes de la validación
 export const validateCreateReservation = [
-  // Agrega un middleware temporal para debugging
+ 
   (req, res, next) => {
-    console.log('📋 Body recibido en middleware:', req.body);
-    console.log('👤 Usuario autenticado:', req.user);
     next();
   },
   
@@ -24,7 +21,6 @@ export const validateCreateReservation = [
 
   (req, res, next) => {
     const errors = validationResult(req);
-    console.log('❌ Errores de validación:', errors.array());
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
