@@ -6,15 +6,15 @@ import { validateCreateReservation, validateReservationId } from '../middleware/
 const router = Router();
 
 // POST /reservations → Crear reserva
-router.post('/reservations', authMiddleware, validateCreateReservation, createReservation);
+router.post('/booking', authMiddleware, validateCreateReservation, createReservation);
 
 // GET /reservations → Listar reservas del usuario
-router.get('/reservations', authMiddleware, getReservations);
+router.get('/booking', authMiddleware, getReservations);
 
 // PUT /reservations/:id → Modificar reserva
-router.put('/reservations/:id', authMiddleware, validateReservationId, updateReservation);
+router.put('/booking/:id', authMiddleware, validateReservationId, updateReservation);
 
 // DELETE /reservations/:id → Cancelar reserva
-router.delete('/reservations/:id', authMiddleware, validateReservationId, deleteReservation);
+router.delete('/booking/:id', authMiddleware, validateReservationId, deleteReservation);
 
 export default router;

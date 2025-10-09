@@ -1,16 +1,21 @@
 import db from '../config/db.js';
 
 // Crear una reserva
-export const insertReservation = async (fechaIngreso, fechaEgreso, estado, IDUsuario, IDHabitacion) => {
+// Crear una reserva
+export const insertReservation = async (fechaIngreso, fechaEgreso, estado, IDUsuario, IDHabitacion, precio) => {
   try {
     const sql = `
-      INSERT INTO reservas (fechaIngreso, fechaEgreso, estado, IDUsuario, IDHabitacion)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO reservas (fechaIngreso, fechaEgreso, estado, IDUsuario, IDHabitacion, precio)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
-    const values = [fechaIngreso, fechaEgreso, estado, IDUsuario, IDHabitacion];
+    const values = [fechaIngreso, fechaEgreso, estado, IDUsuario, IDHabitacion, precio];
+    console.log('Ejecutando SQL:', sql);
+    console.log('Valores:', values);
+    
     const [result] = await db.query(sql, values);
     return result;
   } catch (error) {
+    console.error('Error en insertReservation:', error);
     throw error;
   }
 };

@@ -5,30 +5,68 @@ import {
   cancelReservationByIds
 } from "../models/reservations.model.js";
 
-// Crear reserva
+/// Crear reserva
 export const createReservation = async (req, res) => {
   try {
-    const { fechaIngreso, fechaEgreso, estado, IDHabitacion } = req.body;
-    const IDUsuario = req.user.IDUsuario; // Lo sacamos del token
+    console.log('🔍 Iniciando createReservation');
+    console.log('📦 Body completo:', req.body);
+    console.log('👤 Usuario del token:', req.user);
 
-    if (!fechaIngreso || !fechaEgreso || !estado || !IDHabitacion) {
-      return res.status(400).json({ message: "Faltan datos obligatorios" });
+    const { fechaIngreso, fechaEgreso, estado, IDHabitacion, precio } = req.body;
+    const IDUsuario = req.user.IDUsuario || req.user.id; // Intenta con ambos
+
+    console.log('📊 Datos extraídos:', {
+      fechaIngreso,
+      fechaEgreso,
+      estado,
+      IDHabitacion,
+      precio,
+      IDUsuario
+    });
+
+    // Validación de datos obligatorios
+    if (!fechaIngreso || !fechaEgreso || !estado || !IDHabitacion || !precio) {
+      console.log('❌ Faltan datos obligatorios');
+      return res.status(400).json({ 
+        message: "Faltan datos obligatorios",
+        datosRecibidos: req.body,
+        datosRequeridos: ['fechaIngreso', 'fechaEgreso', 'estado', 'IDHabitacion', 'precio']
+      });
     }
 
-    const result = await insertReservation(fechaIngreso, fechaEgreso, estado, IDUsuario, IDHabitacion);
+    if (!IDUsuario) {
+      console.log('❌ Usuario no autenticado');
+      return res.status(401).json({ 
+        message: "Usuario no autenticado",
+        user: req.user 
+      });
+    }
 
+    console.log('🚀 Llamando a insertReservation...');
+    const result = await insertReservation(fechaIngreso, fechaEgreso, estado, IDUsuario, IDHabitacion, precio);
+
+    console.log('✅ Reserva creada exitosamente');
     res.status(201).json({
       message: "Reserva creada con éxito",
-      insertId: result.insertId
+      insertId: result.insertId,
+      reserva: {
+        fechaIngreso,
+        fechaEgreso,
+        estado,
+        IDUsuario,
+        IDHabitacion,
+        precio
+      }
     });
   } catch (error) {
+    console.error('💥 Error en createReservation:', error);
     res.status(500).json({
       message: "Error al crear la reserva",
-      error: error.message
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 };
-
 // Obtener reservas (solo las del usuario logueado)
 export const getReservations = async (req, res) => {
   try {

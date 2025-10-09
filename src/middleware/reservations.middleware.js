@@ -1,8 +1,15 @@
 // middleware/reservations.middleware.js
 import { check, param, validationResult } from "express-validator";
 
-// Middleware para validar creación de reserva
+// En tu middleware, antes de la validación
 export const validateCreateReservation = [
+  // Agrega un middleware temporal para debugging
+  (req, res, next) => {
+    console.log('📋 Body recibido en middleware:', req.body);
+    console.log('👤 Usuario autenticado:', req.user);
+    next();
+  },
+  
   check("fechaIngreso")
     .notEmpty().withMessage("La fecha de ingreso es obligatoria")
     .isISO8601().withMessage("La fecha de ingreso debe tener formato YYYY-MM-DD"),
@@ -17,6 +24,7 @@ export const validateCreateReservation = [
 
   (req, res, next) => {
     const errors = validationResult(req);
+    console.log('❌ Errores de validación:', errors.array());
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
