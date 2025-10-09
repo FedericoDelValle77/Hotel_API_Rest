@@ -8,21 +8,8 @@ import {
 /// Crear reserva
 export const createReservation = async (req, res) => {
   try {
-    console.log('🔍 Iniciando createReservation');
-    console.log('📦 Body completo:', req.body);
-    console.log('👤 Usuario del token:', req.user);
-
     const { fechaIngreso, fechaEgreso, estado, IDHabitacion, precio } = req.body;
     const IDUsuario = req.user.IDUsuario || req.user.id; // Intenta con ambos
-
-    console.log('📊 Datos extraídos:', {
-      fechaIngreso,
-      fechaEgreso,
-      estado,
-      IDHabitacion,
-      precio,
-      IDUsuario
-    });
 
     // Validación de datos obligatorios
     if (!fechaIngreso || !fechaEgreso || !estado || !IDHabitacion || !precio) {
@@ -42,10 +29,8 @@ export const createReservation = async (req, res) => {
       });
     }
 
-    console.log('🚀 Llamando a insertReservation...');
     const result = await insertReservation(fechaIngreso, fechaEgreso, estado, IDUsuario, IDHabitacion, precio);
 
-    console.log('✅ Reserva creada exitosamente');
     res.status(201).json({
       message: "Reserva creada con éxito",
       insertId: result.insertId,
@@ -59,7 +44,6 @@ export const createReservation = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('💥 Error en createReservation:', error);
     res.status(500).json({
       message: "Error al crear la reserva",
       error: error.message,
